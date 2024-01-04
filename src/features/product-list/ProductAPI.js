@@ -7,11 +7,20 @@ export function fetchAllProducts() {
   });
 }
 
-export function fetchProductsByFilter(filter) {
+export function fetchProductsByFilter(filter, sort, pagenation) {
   // filter={"category":"phone"}
   let queryString = "";
   for (let key in filter) {
-    queryString += `${key}=${filter[key]}&`;
+    const categoryValues = filter[key];
+    if (categoryValues.length) {
+      queryString += `${key}=${categoryValues}&`;
+    }
+  }
+  for (let key in sort) {
+    queryString += `${key}=${sort[key]}&`;
+  }
+  for (let key in pagenation) {
+    queryString += `${key}=${pagenation[key]}&`;
   }
 
   return new Promise(async (resolve) => {

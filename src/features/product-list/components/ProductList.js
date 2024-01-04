@@ -18,6 +18,7 @@ import {
   fetchProductsByFilterAsync,
   selectAllProducts,
 } from "../ProductSlice";
+import { ITEMS_PER_PAGE } from "../../../app/constant";
 const items = [
   {
     id: 1,
@@ -138,7 +139,6 @@ export default function ProductList() {
 
   const handleSort = (e, option) => {
     const sort = { _sort: option.sort, _order: option.order };
-    console.log({ sort });
     setSort(sort);
   };
 
@@ -146,11 +146,10 @@ export default function ProductList() {
     console.log({ page });
     setPage(page);
   };
-
-  // dispatch...
   useEffect(() => {
-    dispatch(fetchProductsByFilterAsync(filter));
-  }, [dispatch, filter]);
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    dispatch(fetchProductsByFilterAsync({ filter, sort, pagination }));
+  }, [dispatch, filter, sort, page]);
 
   return (
     <div className="bg-white">
